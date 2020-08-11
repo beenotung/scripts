@@ -1,0 +1,6 @@
+#!/bin/bash
+## Usage : gitr <git command>
+##   run the git command recursively (in parallel, with submodule)
+set -e
+set -o pipefail
+find -name .git -exec dirname "{}" \; | xargs -I {} echo cd "$PWD/{}/"\; $@ | parallel --pipe bash

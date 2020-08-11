@@ -1,0 +1,31 @@
+#!/bin/bash
+## Usage : [flag]
+## Flags :
+##   -r : recursively
+set -e
+set -o pipefail
+if [ $# != 0 ]; then
+  while test $# -gt 0; do
+    case "$1" in
+      -rs|-sr)
+        shift
+        set -- $@ -r -s
+        ;;
+      -r)
+        shift
+        r=true
+        ;;
+      -s)
+        shift
+        s=true
+        ;;
+      *)
+        echo "Invalid argument: $1" >&2
+        exit 1
+        ;;
+    esac
+  done
+  $r && ( $s && gitrs ap || gitr ap ) || ap
+else
+  git push --all --follow-tags --recurse-submodules=on-demand
+fi

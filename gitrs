@@ -1,0 +1,6 @@
+#!/bin/bash
+## Usage : gitrs <git command>
+##   run the (git) command recursively, including submodules
+set -e
+set -o pipefail
+find -name .git -exec dirname "{}" \; | xargs -I {} echo cd "$PWD/{}/"\; $@ \; | bash
